@@ -5,7 +5,7 @@ const App = () => {
 
     return (
         <div className="app-container">
-            <Headers />
+            {/* <Headers /> */}
             <AppRoutes />
         </div>
     );

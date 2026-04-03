@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import {authService} from '../../services/authService';
+import { authService } from '../../services/authService';
+
 export default function VerifyPage() {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState('loading'); // loading, success, error

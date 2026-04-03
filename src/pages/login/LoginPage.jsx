@@ -1,57 +1,31 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../../services/authService';
+import { Link } from 'react-router-dom'; // Dùng Link để chuyển trang không bị load lại
 import './LoginPage.css';
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ emailOrPhone: '', password: '' });
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [role, setRole] = useState('student');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setErrorMsg('');
-    setIsLoading(true);
-
-    // FIX TẠI ĐÂY: Gửi đúng key 'email' và format 'ROLE'
-    const payload = {
-     
-      email: formData.emailOrPhone, 
-      password: formData.password,
-    };
-
-    try {
-      const response = await authService.login(payload);
-      
-      // Với Cookie, trình duyệt tự lưu, ta chỉ cần lưu User Info vào localStorage
-      if (response) {
-        localStorage.setItem('user', JSON.stringify(response.user || response.data?.user));
-        alert('Đăng nhập thành công!');
-        navigate('/'); 
-      }
-    } catch (error) {
-      // Hiện lỗi chi tiết từ BE trả về
-      setErrorMsg(error.response?.data?.message || 'Tài khoản hoặc mật khẩu không chính xác');
-    } finally {
-      setIsLoading(false);
-    }
+    alert(`Đăng nhập thành công với vai trò: ${role}`);
   };
 
   return (
     <div className="login-container">
+      {/* CỘT TRÁI - BANNER */}
       <div className="login-banner">
         <div className="banner-content">
           <h1>Hệ Thống Thi Trực Tuyến</h1>
-          <p>Nền tảng quản lý học tập, giao bài và tổ chức thi tiện lợi, minh bạch.</p>
-          <img src="https://illustrations.popsy.co/blue/student-going-to-school.svg" alt="Banner" className="banner-image" />
+          <p>Nền tảng quản lý học tập, giao bài và tổ chức thi tiện lợi, minh bạch và hoàn toàn tự động.</p>
+          <img 
+            src="https://illustrations.popsy.co/blue/student-going-to-school.svg" 
+            alt="Education Illustration" 
+            className="banner-image"
+          />
         </div>
       </div>
 
+      {/* CỘT PHẢI - FORM */}
       <div className="login-form-section">
         <div className="form-wrapper">
           <div className="form-header">
@@ -59,48 +33,65 @@ export default function LoginPage() {
             <p>Vui lòng đăng nhập để tiếp tục</p>
           </div>
 
-        
-
-          {errorMsg && (
-            <div style={{ color: '#dc2626', backgroundColor: '#fee2e2', padding: '0.75rem', borderRadius: '0.5rem', marginBottom: '1rem', textAlign: 'center', fontSize: '0.85rem' }}>
-              {errorMsg}
-            </div>
-          )}
+          {/* Chọn vai trò */}
+          <div className="role-toggle">
+            <button
+              type="button"
+              onClick={() => setRole('student')}
+              className={role === 'student' ? 'active' : ''}
+            >
+              🎓 Học sinh
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole('teacher')}
+              className={role === 'teacher' ? 'active' : ''}
+            >
+              👨‍🏫 Giáo viên
+            </button>
+          </div>
 
           <form onSubmit={handleLogin} className="login-form">
             <div className="input-group">
-              <label>Email hoặc Số điện thoại</label>
-              <input 
-                type="text" 
-                name="emailOrPhone" 
-                value={formData.emailOrPhone} 
-                onChange={handleChange} 
-                placeholder="Nhập email của bạn" 
-                required 
-              />
+              <label>Số điện thoại hoặc Email</label>
+              <input type="text" placeholder="Nhập số điện thoại / email" required />
             </div>
 
             <div className="input-group">
               <label>Mật khẩu</label>
-              <input 
-                type="password" 
-                name="password" 
-                value={formData.password} 
-                onChange={handleChange} 
-                placeholder="••••••••" 
-                required 
-              />
+              <input type="password" placeholder="••••••••" required />
             </div>
 
             <div className="form-options">
-              <label className="remember-me"><input type="checkbox" /> Ghi nhớ</label>
-              <Link to="/forgot-password" style={{color: '#2563eb', textDecoration: 'none', fontWeight: '500'}}>Quên mật khẩu?</Link>
+              <label className="remember-me">
+                <input type="checkbox" /> Ghi nhớ đăng nhập
+              </label>
+              <Link to="/forgot-password" className="forgot-password">Quên mật khẩu?</Link>
             </div>
 
-            <button type="submit" className="btn-submit" disabled={isLoading}>
-              {isLoading ? 'Đang xử lý...' : 'Đăng nhập'}
-            </button>
+            <button type="submit" className="btn-submit">Đăng nhập</button>
           </form>
+
+          {/* Đăng nhập mxh (Chỉ hiện cho học sinh) */}
+          {role === 'student' && (
+            <div className="social-login">
+              <div className="divider"><span>Hoặc đăng nhập với</span></div>
+              <div className="social-buttons">
+                <button type="button" className="btn-google">
+                  <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                  </svg>
+                  Google
+                </button>
+                <button type="button" className="btn-zalo">
+                  <span style={{ fontWeight: '900', fontSize: '1.2rem', color: '#0068ff' }}>Z</span>alo
+                </button>
+              </div>
+            </div>
+          )}
 
           <p className="register-link">
             Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link>
