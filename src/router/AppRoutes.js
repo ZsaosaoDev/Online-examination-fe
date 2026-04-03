@@ -1,8 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import UserPage from "../pages/UserPage";
-import HomePage from "../pages/HomePage";
 import AdminPage from "../pages/AdminPage";
-
+import HomePage from "../pages/HomePage";
 import ManagerUserPage from "../pages/AdminPage/ManagerUserPage";
 import ManagerTestPage from "../pages/AdminPage/ManagerTestPage";
 
