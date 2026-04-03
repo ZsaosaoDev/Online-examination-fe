@@ -1,41 +1,28 @@
 import axios from 'axios';
 
-// 1. Cấu hình mặc định
 const axiosClient = axios.create({
-  // Điền link gốc API Backend của bạn vào đây
   baseURL: 'https://unwifely-pamella-interrailway.ngrok-free.dev/api', 
+  withCredentials: true, // QUAN TRỌNG: Để nhận và gửi Cookie
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true', // QUAN TRỌNG: Bỏ qua trang cảnh báo của ngrok
   },
 });
 
-
-// 2. Can thiệp trước khi gửi Request (Gắn Token nếu có)
 axiosClient.interceptors.request.use(
   (config) => {
-    // Nếu có token lưu trong localStorage thì tự động gắn vào đây
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// 3. Can thiệp sau khi nhận Response từ Backend
 axiosClient.interceptors.response.use(
-  (response) => {
-    // Trả về thẳng data để bên ngoài không cần gọi response.data.data
-    if (response && response.data) {
-      return response.data;
-    }
-    return response;
-  },
+  (response) => (response && response.data ? response.data : response),
   (error) => {
-    // Bắt lỗi chung (VD: Hết hạn token thì văng ra trang login)
     console.error("Lỗi API:", error.response?.data || error.message);
     return Promise.reject(error);
   }
