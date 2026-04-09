@@ -41,7 +41,8 @@ export default function Login() {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = `https://silkroadshop.io.vn/api/oauth2/authorization/google`;
+        const googleAuthUrl = `${API_URL}/oauth2/authorization/google`;
+        window.location.href = googleAuthUrl;
     };
 
     return (
@@ -61,12 +62,12 @@ export default function Login() {
                 </div>
             </div>
 
-      <div className="login-form-section">
-        <div className="form-wrapper">
-          <div className="form-header">
-            <h2>🎉Welcome Back!🎉</h2>
-            <p>Please log in to continue</p>
-          </div>
+            <div className="login-form-section">
+                <div className="form-wrapper">
+                    <div className="form-header">
+                        <h2>🎉Welcome Back!🎉</h2>
+                        <p>Please log in to continue</p>
+                    </div>
 
                     {error && <div className="error-message">{error}</div>}
 
