@@ -131,14 +131,14 @@ export default function Dashboard() {
             <main className="main-content">
                 <header className="header-home">
                     <div>
-                        <h1>Hi, {user.email.split('@')[0]}</h1>
+                        <h1>Hi, {user?.email.split('@')[0]}</h1>
                         <p className="subtitle">
                             Role: {isTeacher ? 'Teacher' : 'Student'}
                         </p>
                     </div>
                     <div className="user-info">
                         <div className="avatar">
-                            {user.email.charAt(0).toUpperCase()}
+                            {user?.email.charAt(0).toUpperCase()}
                         </div>
                     </div>
                 </header>
