@@ -41,7 +41,7 @@ export default function Login() {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = `${API_URL}/oauth2/authorization/google`;
+        window.location.href = `https://silkroadshop.io.vn/api/oauth2/authorization/google`;
     };
 
     return (
