@@ -3,7 +3,7 @@ import axios from 'axios';
 // 1. Cấu hình mặc định
 const axiosClient = axios.create({
   // Điền link gốc API Backend của bạn vào đây
-  baseURL: 'https://unwifely-pamella-interrailway.ngrok-free.dev/api', 
+  baseURL: process.env.REACT_APP_API_URL || 'https://unwifely-pamella-interrailway.ngrok-free.dev/api',
   headers: {
     'Content-Type': 'application/json',
   },
