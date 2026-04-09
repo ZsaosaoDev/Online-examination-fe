@@ -9,7 +9,6 @@ export default function Register() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -17,10 +16,9 @@ export default function Register() {
   const [successMsg, setSuccessMsg] = useState('');
  
   useEffect(() => {
-    // AUTH GUARD: If already logged in, redirect to home
     const token = localStorage.getItem('accessToken');
     if (token) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [navigate]);
 
@@ -35,11 +33,6 @@ export default function Register() {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
-
-    if (formData.password !== formData.confirmPassword) {
-      setErrorMsg('Passwords do not match!');
-      return;
-    }
 
     try {
       setIsLoading(true);
@@ -108,8 +101,7 @@ export default function Register() {
               />
             </div>
 
-            <div className="reg-row">
-              <div className="reg-input-group">
+            <div className="reg-input-group">
                 <label>Password</label>
                 <input 
                   type="password" 
@@ -119,18 +111,6 @@ export default function Register() {
                   placeholder="••••••••" 
                   required 
                 />
-              </div>
-              <div className="reg-input-group">
-                <label>Confirm Password</label>
-                <input 
-                  type="password" 
-                  name="confirmPassword" 
-                  value={formData.confirmPassword} 
-                  onChange={handleChange} 
-                  placeholder="••••••••" 
-                  required 
-                />
-              </div>
             </div>
 
             <button type="submit" className="reg-btn-submit" disabled={isLoading}>

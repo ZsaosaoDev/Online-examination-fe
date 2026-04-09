@@ -14,7 +14,7 @@ export default function Login() {
     // AUTH GUARD: If already logged in, redirect to home
     const token = localStorage.getItem('accessToken');
     if (token) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [navigate]);
 
@@ -25,10 +25,10 @@ export default function Login() {
 
     try {
       const response = await authApi.login({ email, password });
-      const { accessToken } = response.data;
+      const { accessToken } = response.data.data;
 
       localStorage.setItem('accessToken', accessToken);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError(
         err.response?.data?.message ||

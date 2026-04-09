@@ -1,20 +1,46 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authApi } from '../../api';
+import { authApi, userApi, classroomApi, examApi, dashboardApi } from '../../api';
+import ClassroomManager from '../Classroom/ClassroomManager';
+import ExamBuilder from '../Exam/ExamBuilder';
+import ExamManager from '../Exam/ExamManager';
+import StudentExams from '../Exam/StudentExams';
+import MyResults from '../Evaluation/MyResults';
 import './Dashboard.css';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
+    fetchProfile();
+    fetchStats();
+  }, [navigate]);
+
+  const fetchProfile = async () => {
+    try {
+      const response = await userApi.getUserProfile();
+      setUser(response.data.data);
+    } catch (err) {
+      console.error('Failed to fetch profile:', err);
+      localStorage.removeItem('accessToken');
       navigate('/login');
-    } else {
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await dashboardApi.getStats();
+      setStats(response.data.data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
       setLoading(false);
     }
-  }, [navigate]);
+  };
 
   const handleLogout = async () => {
     try {
@@ -27,75 +53,109 @@ export default function Dashboard() {
     }
   };
 
-  const exams = [
-    { id: 1, title: 'Final Math Exam', time: '60 mins', questions: 40, icon: '📐' },
-    { id: 2, title: 'English Grammar Test', time: '45 mins', questions: 30, icon: '🔤' },
-    { id: 3, title: 'Java Fundamentals', time: '90 mins', questions: 50, icon: '☕' },
-  ];
+  if (loading) return <div className="loading-screen">Loading your workspace...</div>;
 
-  if (loading) return null;
+  const isTeacher = user?.roles?.includes('ROLE_TEACHER');
 
   return (
     <div className="home-container">
       <aside className="sidebar">
         <div className="logo">
-          <span></span> <span>Clyvasync</span>
+          <div className="logo-icon">C</div>
+          <span>Clyvasync</span>
         </div>
         <nav className="nav-menu">
-          <Link to="/" className="nav-item"> <span>Public Home</span></Link>
-          <Link to="/dashboard" className="nav-item active"> <span>Dashboard</span></Link>
-          <Link to="/exams" className="nav-item"> <span>My Exams</span></Link>
-          <Link to="/results" className="nav-item"> <span>Results</span></Link>
-          {localStorage.getItem('accessToken') && (
-            <button onClick={handleLogout} className="nav-item logout-btn" style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}>
+          <button 
+            className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+             <span>Overview</span>
+          </button>
+          
+          {isTeacher ? (
+            <>
+              <button 
+                className={`nav-item ${activeTab === 'classrooms' ? 'active' : ''}`}
+                onClick={() => setActiveTab('classrooms')}
+              >
+                <span>Manage Classes</span>
+              </button>
+              <button 
+                className={`nav-item ${activeTab === 'exams' ? 'active' : ''}`}
+                onClick={() => setActiveTab('exams')}
+              >
+                <span>Exam Builder</span>
+              </button>
+              <button 
+                className={`nav-item ${activeTab === 'exam-manager' ? 'active' : ''}`}
+                onClick={() => setActiveTab('exam-manager')}
+              >
+                <span>Manage Exams</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button 
+                className={`nav-item ${activeTab === 'my-exams' ? 'active' : ''}`}
+                onClick={() => setActiveTab('my-exams')}
+              >
+                <span>Available Exams</span>
+              </button>
+              <button 
+                className={`nav-item ${activeTab === 'results' ? 'active' : ''}`}
+                onClick={() => setActiveTab('results')}
+              >
+                <span>My Results</span>
+              </button>
+            </>
+          )}
+
+          <div className="sidebar-footer">
+            <button onClick={handleLogout} className="nav-item logout-btn">
               <span>Logout</span>
             </button>
-          )}
+          </div>
         </nav>
       </aside>
 
       <main className="main-content">
         <header className="header-home">
           <div>
-            <h1>Good morning!</h1>
-            <p className="subtitle">What would you like to learn today?</p>
+            <h1>Hi, {user.fullName || user.email.split('@')[0]}!</h1>
+            <p className="subtitle">Role: {isTeacher ? 'Teacher' : 'Student'}</p>
           </div>
           <div className="user-info">
-            <div className="avatar">U</div>
+            <div className="avatar">{(user.fullName || user.email).charAt(0).toUpperCase()}</div>
           </div>
         </header>
 
-        <div className="stats-grid">
-          <div className="stat-card">
-            <h3>Exams Finished</h3>
-            <p>12</p>
-          </div>
-          <div className="stat-card">
-            <h3>Average Score</h3>
-            <p>8.5</p>
-          </div>
-          <div className="stat-card">
-            <h3>Ranking</h3>
-            <p>#4</p>
-          </div>
-        </div>
-
-        <h3 className="section-title">Upcoming Exams</h3>
-        <div className="exam-grid">
-          {exams.map((exam) => (
-            <div key={exam.id} className="exam-card">
-              <div className="exam-banner">{exam.icon}</div>
-              <div className="exam-details">
-                <h4>{exam.title}</h4>
-                <div className="exam-info">
-                  <span> Duration: {exam.time}</span>
-                  <span> Questions: {exam.questions}</span>
-                </div>
-                <button className="btn-start">Start Now</button>
+        <section className="dashboard-view">
+          {activeTab === 'overview' && (
+            <div className="stats-grid">
+              <div className="stat-card">
+                <h3>{isTeacher ? 'Total Classes' : 'Exams Taken'}</h3>
+                <p>{isTeacher ? (stats?.totalClassrooms || 0) : (stats?.examsTaken || 0)}</p>
               </div>
+              <div className="stat-card">
+                <h3>{isTeacher ? 'Exams Built' : 'Average Score'}</h3>
+                <p>{isTeacher ? (stats?.totalExamsBuilt || 0) : (stats?.averageScore?.toFixed(2) || '0.00')}</p>
+              </div>
+              {isTeacher && (
+                <div className="stat-card">
+                  <h3>Total Students</h3>
+                  <p>{stats?.totalStudentsInClasses || 0}</p>
+                </div>
+              )}
             </div>
-          ))}
-        </div>
+          )}
+
+          {activeTab === 'classrooms' && isTeacher && <ClassroomManager />}
+          {activeTab === 'exams' && isTeacher && <ExamBuilder />}
+          {activeTab === 'exam-manager' && isTeacher && <ExamManager />}
+          
+          {activeTab === 'my-exams' && !isTeacher && <StudentExams />}
+          {activeTab === 'results' && !isTeacher && <MyResults />}
+        </section>
       </main>
     </div>
   );
