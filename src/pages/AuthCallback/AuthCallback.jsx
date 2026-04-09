@@ -10,8 +10,8 @@ const AuthCallback = () => {
 
     if (token) {
       localStorage.setItem('accessToken', token);
-      // Redirect to home after successful auth
-      navigate('/');
+      // Redirect to dashboard after successful auth
+      navigate('/dashboard');
     } else {
       // If no token, redirect to login with error
       navigate('/login?error=Google login failed');

@@ -10,6 +10,9 @@ import Login from "../pages/Login/Login";
 import AuthCallback from "../pages/AuthCallback/AuthCallback";
 import Register from "../pages/Register/Register";
 import Verify from "../pages/Verify/Verify";
+import ExamTaking from "../pages/Evaluation/ExamTaking";
+import Gradebook from "../pages/Evaluation/Gradebook";
+import JoinClassroom from "../pages/Classroom/JoinClassroom";
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -19,6 +22,9 @@ const AppRoutes = () => {
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<PageTransition><Home /></PageTransition>} />
                 <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
+                <Route path="/dashboard/exam/:id" element={<PageTransition><ExamTaking /></PageTransition>} />
+                <Route path="/dashboard/gradebook/:examId" element={<PageTransition><Gradebook /></PageTransition>} />
+                <Route path="/classrooms/join" element={<PageTransition><JoinClassroom /></PageTransition>} />
                 <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
                 <Route path="/auth/callback" element={<PageTransition><AuthCallback /></PageTransition>} />
                 <Route path="/register" element={<PageTransition><Register /></PageTransition>} />

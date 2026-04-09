@@ -1,0 +1,141 @@
+/* Popup.css */
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.popup-container {
+    background: #ffffff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border-top: 4px solid transparent;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Colors by type */
+.popup-container.error {
+    border-top-color: #ef4444;
+}
+
+.popup-container.success {
+    border-top-color: #22c55e;
+}
+
+.popup-container.info {
+    border-top-color: #3b82f6;
+}
+
+/* Icons */
+.popup-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+}
+
+.popup-container.error .popup-icon {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.popup-container.success .popup-icon {
+    background: #dcfce7;
+    color: #22c55e;
+}
+
+.popup-container.info .popup-icon {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.popup-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* Content */
+.popup-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 0.75rem 0;
+}
+
+.popup-message {
+    font-size: 1rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Actions */
+.popup-actions {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.popup-btn {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.popup-btn.error {
+    background: #ef4444;
+    color: white;
+}
+.popup-btn.error:hover {
+    background: #dc2626;
+}
+
+.popup-btn.success {
+    background: #22c55e;
+    color: white;
+}
+.popup-btn.success:hover {
+    background: #16a34a;
+}
+
+.popup-btn.info {
+    background: #3b82f6;
+    color: white;
+}
+.popup-btn.info:hover {
+    background: #2563eb;
+}

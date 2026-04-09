@@ -1,0 +1,145 @@
+.my-results-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+.results-list-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.results-list-header h2 {
+    font-size: 2.2rem;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.results-list-header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.no-results-card {
+    text-align: center;
+    background: #ffffff;
+    padding: 4rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.no-results-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.result-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.result-card-header {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exam-date {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.score-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: white;
+}
+
+.score-excellent {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+}
+
+.score-good {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+.score-poor {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+.result-card-body {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    flex: 1;
+}
+
+.result-card-body h3 {
+    font-size: 1.25rem;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.result-meta {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.result-card-footer {
+    padding: 1.25rem 1.5rem;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.btn-review {
+    width: 100%;
+    padding: 0.75rem;
+    background: #ffffff;
+    border: 2px solid #4f46e5;
+    color: #4f46e5;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-review:hover {
+    background: #4f46e5;
+    color: #ffffff;
+}
+
+.loading-results {
+    text-align: center;
+    padding: 4rem;
+    font-size: 1.2rem;
+    color: #4f46e5;
+    font-weight: 600;
+}
