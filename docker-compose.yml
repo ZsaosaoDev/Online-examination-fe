@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  online-examination-frontend:
+    # Build từ Dockerfile nằm trong cùng thư mục
+    build:
+      context: .
+      args:
+        # Đường dẫn API Backend (SpringBoot) mà trình duyệt sẽ gọi tới, nếu BE đã có domain thì bạn sửa thành: https://api.silkroadshop.io.vn/api/v1
+        - REACT_APP_API_URL=https://api.silkroadshop.io.vn/api/v1
+    container_name: react-frontend
+    ports:
+      - "80:80" # Map cổng 80 của máy chủ ra cổng 80 của container Frontend
+    restart: unless-stopped
+    # Không cần thiết lập networks chung với BE ở đây vì React chạy ở Browser của User và gọi ra ngoài internet tới BE.
