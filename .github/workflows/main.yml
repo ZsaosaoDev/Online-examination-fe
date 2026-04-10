@@ -27,7 +27,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: vantrandevops/online-exam-fe:latest
+          tags: |
+            vantrandevops/online-exam-fe:latest
+            vantrandevops/online-exam-fe:${{ github.sha }}
           build-args: |
             REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
 
