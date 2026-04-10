@@ -168,7 +168,7 @@ export default function Dashboard() {
                                     {isTeacher
                                         ? stats?.totalExamsBuilt || 0
                                         : stats?.averageScore?.toFixed(2) ||
-                                          '0.00'}
+                                        '0.00'}
                                 </p>
                             </div>
                             {isTeacher && (
