@@ -41,34 +41,19 @@ const ExamBuilder = () => {
     const handleQuestionChange = (qIndex, field, value) => {
         const newQuestions = [...questions];
         newQuestions[qIndex][field] = value;
-
-        // If switching to SINGLE_CHOICE, keep only the first correct option (if any)
-        if (field === 'type' && value === 'SINGLE_CHOICE') {
-            let foundFirstCorrect = false;
-            newQuestions[qIndex].options.forEach(opt => {
-                if (opt.isCorrect && !foundFirstCorrect) {
-                    foundFirstCorrect = true;
-                } else if (opt.isCorrect && foundFirstCorrect) {
-                    opt.isCorrect = false;
-                }
-            });
-        }
-
         setQuestions(newQuestions);
     };
 
     const handleOptionChange = (qIndex, oIndex, field, value) => {
         const newQuestions = [...questions];
-        
-        // Handle Single Choice logic
-        if (field === 'isCorrect' && value === true && newQuestions[qIndex].type === 'SINGLE_CHOICE') {
+        // Single choice: only one option can be correct
+        if (field === 'isCorrect' && value === true) {
             newQuestions[qIndex].options.forEach((opt, idx) => {
                 opt.isCorrect = (idx === oIndex);
             });
         } else {
             newQuestions[qIndex].options[oIndex][field] = value;
         }
-        
         setQuestions(newQuestions);
     };
 
@@ -145,23 +130,14 @@ const ExamBuilder = () => {
                                     onChange={(e) => handleQuestionChange(qIndex, 'content', e.target.value)} 
                                     required 
                                 />
-                                <div className="question-settings">
-                                    <label>Answer Type:</label>
-                                    <select 
-                                        value={q.type} 
-                                        onChange={(e) => handleQuestionChange(qIndex, 'type', e.target.value)}
-                                    >
-                                        <option value="SINGLE_CHOICE">Single Choice</option>
-                                        <option value="MULTIPLE_CHOICE">Multiple Choice</option>
-                                    </select>
-                                </div>
 
                                 <div className="options-container">
                                     <label>Options:</label>
                                     {q.options.map((o, oIndex) => (
                                         <div key={oIndex} className="option-row">
                                             <input 
-                                                type="checkbox" 
+                                                type="radio" 
+                                                name={`correct-${qIndex}`}
                                                 className="option-check"
                                                 checked={o.isCorrect} 
                                                 onChange={(e) => handleOptionChange(qIndex, oIndex, 'isCorrect', e.target.checked)} 

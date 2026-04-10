@@ -16,19 +16,25 @@ const MyResults = () => {
         try {
             const response = await evaluationApi.getMyAttempts();
             // Sort by submit time (newest first)
-            const sortedAttempts = response.data.data.sort((a, b) => 
-                new Date(b.submitTime) - new Date(a.submitTime)
+            const sortedAttempts = response.data.data.sort(
+                (a, b) => new Date(b.submitTime) - new Date(a.submitTime)
             );
             setAttempts(sortedAttempts);
         } catch (error) {
-            console.error("Failed to fetch attempts", error);
+            console.error('Failed to fetch attempts', error);
         } finally {
             setLoading(false);
         }
     };
 
     const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
@@ -38,7 +44,12 @@ const MyResults = () => {
         return 'score-poor';
     };
 
-    if (loading) return <div className="loading-results">Loading your academic history...</div>;
+    if (loading)
+        return (
+            <div className="loading-results">
+                Loading your academic history...
+            </div>
+        );
 
     return (
         <div className="my-results-container">
@@ -51,28 +62,45 @@ const MyResults = () => {
                 <div className="no-results-card">
                     <div className="no-results-icon">📝</div>
                     <h3>No attempts yet</h3>
-                    <p>You haven't completed any exams. Check "Available Exams" to start.</p>
+                    <p>
+                        You haven't completed any exams. Check "Available Exams"
+                        to start.
+                    </p>
                 </div>
             ) : (
                 <div className="results-grid">
                     {attempts.map((attempt) => (
                         <div key={attempt.id} className="result-card">
                             <div className="result-card-header">
-                                <span className="exam-date">{formatDate(attempt.submitTime)}</span>
-                                <div className={`score-circle ${getScoreClass(attempt.score)}`}>
+                                <span className="exam-date">
+                                    {formatDate(attempt.submitTime)}
+                                </span>
+                                <div
+                                    className={`score-circle ${getScoreClass(attempt.score)}`}
+                                >
                                     {attempt.score.toFixed(1)}
                                 </div>
                             </div>
                             <div className="result-card-body">
-                                <h3>{attempt.examTitle || `Exam #${attempt.examId}`}</h3>
+                                <h3>
+                                    {attempt.examTitle ||
+                                        `Exam #${attempt.examId}`}
+                                </h3>
                                 <div className="result-meta">
-                                    <span>{attempt.answers.length} Questions answered</span>
+                                    <span>
+                                        {attempt.answers.length} Questions
+                                        answered
+                                    </span>
                                 </div>
                             </div>
                             <div className="result-card-footer">
-                                <button 
+                                <button
                                     className="btn-review"
-                                    onClick={() => navigate(`/exams/${attempt.examId}`)}
+                                    onClick={() =>
+                                        navigate(
+                                            `/dashboard/exam/${attempt.examId}`
+                                        )
+                                    }
                                 >
                                     Review Detailed Results
                                 </button>

@@ -382,6 +382,7 @@ body {
   border-radius: 12px;
   margin-bottom: 0.75rem;
   font-weight: 500;
+  transition: all 0.15s ease;
 }
 
 .review-option.correct-selected {
@@ -392,10 +393,11 @@ body {
 }
 
 .review-option.correct-missed {
-  background: var(--bg-white);
+  background: #f0fdf4;
   border-color: var(--success-green);
+  border-style: dashed;
   color: var(--success-text);
-  border-width: 2px;
+  opacity: 0.85;
 }
 
 .review-option.wrong {
@@ -413,8 +415,52 @@ body {
 .indicator-icon {
   font-weight: 800;
   font-size: 1.2rem;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .danger-icon {
   color: var(--danger-red);
+}
+
+.info-icon {
+  color: var(--success-green);
+  opacity: 0.7;
+}
+
+.review-option.correct-selected .indicator-icon {
+  color: var(--success-green);
+}
+
+.review-option.wrong .indicator-icon {
+  color: var(--danger-red);
+}
+
+/* Review question h4 */
+.review-question-item h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Review option input alignment */
+.review-option input[type="radio"],
+.review-option input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  accent-color: var(--primary-indigo);
+}
+
+.review-option.correct-selected input,
+.review-option.correct-missed input {
+  accent-color: var(--success-green);
+}
+
+.review-option.wrong input {
+  accent-color: var(--danger-red);
 }
