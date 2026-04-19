@@ -95,6 +95,7 @@ jobs:
               "sudo docker stop online-exam-fe || true",
               "sudo docker rm online-exam-fe || true",
               "sudo docker rmi vantrandevops/online-exam-fe:latest || true",
+              "sudo docker logout",
               "sudo docker pull vantrandevops/online-exam-fe:latest",
               "sudo docker run -d --name online-exam-fe --restart unless-stopped -p 80:80 vantrandevops/online-exam-fe:latest"
             ]' \
