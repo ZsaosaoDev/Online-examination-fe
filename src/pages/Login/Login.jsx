@@ -65,7 +65,7 @@ export default function Login() {
             <div className="login-form-section">
                 <div className="form-wrapper">
                     <div className="form-header">
-                        <h2>Welcome Backkkkkkkkkkkkk!</h2>
+                        <h2>Welcome back!</h2>
                         <p>Please log in to continue</p>
                     </div>
 
